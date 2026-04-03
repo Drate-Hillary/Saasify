@@ -1,7 +1,7 @@
 // src/components/admin/organizations-table.tsx (updated with filter integration)
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   ColumnDef,
@@ -63,7 +63,7 @@ interface Organization {
   }
 }
 
-export function OrganizationsTable() {
+function OrganizationsTableInner() {
   const searchParams = useSearchParams()
   const [data, setData] = useState<Organization[]>([])
   const [loading, setLoading] = useState(true)
@@ -344,5 +344,13 @@ export function OrganizationsTable() {
         </div>
       </div>
     </div>
+  )
+}
+
+export function OrganizationsTable() {
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <OrganizationsTableInner />
+    </Suspense>
   )
 }

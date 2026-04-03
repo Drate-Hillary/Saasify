@@ -1,7 +1,7 @@
 // src/components/admin/subscriptions-table.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   ColumnDef,
@@ -107,7 +107,7 @@ const getStatusConfig = (status: Subscription['status']) => {
   return configs[status]
 }
 
-export function SubscriptionsTable() {
+function SubscriptionsTableInner() {
   const searchParams = useSearchParams()
   const [data, setData] = useState<Subscription[]>([])
   const [loading, setLoading] = useState(true)
@@ -466,5 +466,13 @@ export function SubscriptionsTable() {
         </>
       )}
     </>
+  )
+}
+
+export function SubscriptionsTable() {
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <SubscriptionsTableInner />
+    </Suspense>
   )
 }
