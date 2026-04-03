@@ -1,6 +1,8 @@
-import { OrganizationsTable } from "@/app/admin/organization_table"
+import { Suspense } from 'react'
+import { OrganizationsTable } from "@/app/admin/organization_filter"
 import { Button } from '@/components/ui/button'
 import { Plus, Download } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function OrganizationsPage() {
   return (
@@ -24,7 +26,9 @@ export default function OrganizationsPage() {
         </div>
       </div>
 
-      <OrganizationsTable />
+      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+        <OrganizationsTable />
+      </Suspense>
     </div>
   )
 }
