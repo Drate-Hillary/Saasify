@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { SubscriptionStats } from "@/app/admin/subscription_stat";
 import { SubscriptionsTable } from "@/app/admin/subscription_table";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,9 +13,7 @@ export default function SubscriptionsPage() {
       </div>
 
       <SubscriptionStats />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
         <SubscriptionsTable />
-      </Suspense>
     </div>
   )
 }

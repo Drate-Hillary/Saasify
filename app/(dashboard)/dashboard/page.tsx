@@ -1,5 +1,4 @@
 // src/app/admin/page.tsx
-import { Suspense } from 'react'
 import { StatsCards } from '@/app/admin/stats_card'
 // import { RecentActivity } from '@/components/admin/recent-activity'
 // import { RevenueChart } from '@/components/admin/revenue-chart'
@@ -16,9 +15,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <Suspense fallback={<div>Loading stats...</div>}>
         <StatsCards />
-      </Suspense>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-4">
