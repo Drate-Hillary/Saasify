@@ -1,0 +1,91 @@
+PROJECT: Saasify
+================
+
+OVERVIEW
+--------
+Saasify is a full-stack SaaS boilerplate built with Next.js 16 (App Router). It provides
+a ready-to-use foundation for multi-tenant SaaS applications with authentication,
+organization management, subscription billing, and an admin dashboard.
+
+
+TECH STACK
+----------
+- Framework:     Next.js 16.2.2 (React 19, TypeScript)
+- Styling:       Tailwind CSS v4, shadcn/ui components
+- Auth:          Supabase Auth (@supabase/ssr)
+- Database:      PostgreSQL via Drizzle ORM + Supabase
+- Payments:      Stripe (subscriptions, webhooks)
+- Icons:         HugeIcons, Lucide React
+- Tables:        TanStack React Table
+- Notifications: Sonner (toast)
+- Themes:        next-themes (dark/light mode)
+
+
+PROJECT STRUCTURE
+-----------------
+app/
+  (auth)/           - Auth pages: login, register, forgot/reset password, verify email
+  (dashboard)/      - Protected user area: dashboard, organization, settings, subscription, users
+  admin/            - Super-admin panel: org table, subscription management, revenue chart, stats
+  api/              - API routes: auth callbacks, Stripe webhooks, admin endpoints
+
+components/
+  ui/               - shadcn/ui primitives (button, card, dialog, table, etc.)
+  app-sidebar.tsx   - Main sidebar navigation
+  header.tsx        - Top navigation bar
+  nav-*.tsx         - Sidebar nav sections (main, projects, secondary, user)
+
+lib/
+  db/
+    schema.ts       - Drizzle ORM schema (users, organizations, members, subscriptions, plans, audit logs, API keys)
+    index.ts        - DB client
+  supabase/         - Supabase client (browser + server)
+  stripe/           - Stripe client, server helpers, webhook handler
+  middleware/       - Auth middleware (route protection)
+  utils.ts          - Shared utilities
+
+drizzle/            - DB migration files
+types/              - Shared TypeScript types
+hooks/              - Custom React hooks
+public/             - Static assets
+
+
+DATABASE SCHEMA
+---------------
+- users                - App users (id, email, name, avatar)
+- organizations        - Tenant orgs (id, name, slug, stripeCustomerId)
+- organization_members - User <-> Org membership with roles (owner, admin, member)
+- subscriptions        - Stripe subscription per org (status, period, cancelAtPeriodEnd)
+- plans                - Available pricing plans (name, price, features, stripePriceId)
+- audit_logs           - Action tracking per user/org
+- api_keys             - Per-org API key management
+
+
+KEY FEATURES
+------------
+1. Authentication      - Email/password login, registration, email verification, password reset
+2. Multi-tenancy       - Organizations with role-based access (owner / admin / member)
+3. Subscription Billing- Stripe-powered plans, upgrade/downgrade, cancellation, webhooks
+4. Admin Dashboard     - Revenue charts, org/user/subscription tables, plan management
+5. Settings            - User and organization settings pages
+6. Dark/Light Mode     - Theme switching via next-themes
+
+
+GETTING STARTED
+---------------
+1. Install dependencies:   npm install
+2. Configure environment:  copy .env.example to .env and fill in Supabase + Stripe keys
+3. Run migrations:         npx drizzle-kit push
+4. Start dev server:       npm run dev
+5. Open:                   http://localhost:3000
+
+
+ENVIRONMENT VARIABLES NEEDED
+-----------------------------
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- DATABASE_URL
+- STRIPE_SECRET_KEY
+- STRIPE_WEBHOOK_SECRET
+- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
