@@ -1,7 +1,7 @@
 // src/components/admin/organizations-table.tsx (updated with filter integration)
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useCallback, useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   ColumnDef,
@@ -72,26 +72,38 @@ function OrganizationsTableInner() {
     pageSize: 10,
   })
 
-  useEffect(() => {
-    fetchOrganizations()
-  }, [searchParams, pagination.pageIndex])
-
-  const fetchOrganizations = async () => {
+  const fetchOrganizations = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams(searchParams)
       params.set('page', (pagination.pageIndex + 1).toString())
       params.set('limit', pagination.pageSize.toString())
-      
+
       const response = await fetch(`/api/admin/organizations?${params.toString()}`)
       const result = await response.json()
       setData(result.data || [])
-    } catch (error) {
+    } catch {
       toast.error('Failed to fetch organizations')
     } finally {
       setLoading(false)
     }
-  }
+  }, [pagination.pageIndex, pagination.pageSize, searchParams])
+
+  useEffect(() => {
+    fetchOrganizations()
+  }, [fetchOrganizations])
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchOrganizations()
+    }
+
+    window.addEventListener('organizations:refresh', handleRefresh)
+
+    return () => {
+      window.removeEventListener('organizations:refresh', handleRefresh)
+    }
+  }, [fetchOrganizations])
 
   const getStatusIcon = (status: string) => {
     switch (status) {

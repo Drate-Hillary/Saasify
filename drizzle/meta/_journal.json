@@ -8,6 +8,13 @@
       "when": 1775185657943,
       "tag": "0000_colossal_puppet_master",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775319874068,
+      "tag": "0001_condemned_rattler",
+      "breakpoints": true
     }
   ]
 }

@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import { OrganizationsTable } from "@/app/admin/organization_filter"
 import { Button } from '@/components/ui/button'
-import { Plus, Download } from 'lucide-react'
+import { Download } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CreateOrganizationDropdown } from '@/app/admin/create_organization'
 
 export default function OrganizationsPage() {
   return (
@@ -19,10 +20,7 @@ export default function OrganizationsPage() {
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Organization
-          </Button>
+          <CreateOrganizationDropdown />
         </div>
       </div>
 

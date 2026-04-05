@@ -13,7 +13,7 @@ export default function SubscriptionsPage() {
       </div>
 
       <SubscriptionStats />
-        <SubscriptionsTable />
+      <SubscriptionsTable />
     </div>
   )
 }

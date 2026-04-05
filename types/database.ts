@@ -269,6 +269,7 @@ export type Database = {
           email: string
           id: string
           name: string | null
+          status: Database["public"]["Enums"]["user_status"]
           updated_at: string
         }
         Insert: {
@@ -278,6 +279,7 @@ export type Database = {
           email: string
           id?: string
           name?: string | null
+          status?: Database["public"]["Enums"]["user_status"]
           updated_at?: string
         }
         Update: {
@@ -287,6 +289,7 @@ export type Database = {
           email?: string
           id?: string
           name?: string | null
+          status?: Database["public"]["Enums"]["user_status"]
           updated_at?: string
         }
         Relationships: []
@@ -308,6 +311,7 @@ export type Database = {
         | "trialing"
         | "unpaid"
       user_role: "owner" | "admin" | "member"
+      user_status: "active" | "suspended"
     }
     CompositeTypes: {
       [_ in never]: never

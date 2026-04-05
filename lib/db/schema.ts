@@ -12,6 +12,7 @@ import { relations } from "drizzle-orm";
 
 // Enums
 export const userRoleEnum = pgEnum("user_role", ["owner", "admin", "member"]);
+export const userStatusEnum = pgEnum("user_status", ["active", "suspended"]);
 export const subscriptionStatusEnum = pgEnum("subscription_status", [
   "active",
   "canceled",
@@ -28,6 +29,7 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   name: text("name"),
   avatarUrl: text("avatar_url"),
+  status: userStatusEnum("status").default("active").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   deletedAt: timestamp("deleted_at"),

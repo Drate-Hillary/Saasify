@@ -1,11 +1,10 @@
-// src/app/page.tsx
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-8">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="text-xl font-bold">
@@ -55,7 +54,10 @@ export default function LandingPage() {
             </h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {pricingPlans.map((plan) => (
-                <div key={plan.name} className="rounded-lg border bg-background p-8">
+                <div
+                  key={plan.name}
+                  className="rounded-lg border bg-background p-8"
+                >
                   <h3 className="text-2xl font-bold">{plan.name}</h3>
                   <div className="mt-4 flex items-baseline text-5xl font-bold">
                     ${plan.price}
@@ -80,36 +82,41 @@ export default function LandingPage() {
         </section>
       </main>
     </div>
-  )
+  );
 }
 
 const pricingPlans = [
   {
-    name: 'Starter',
+    name: "Starter",
     price: 29,
-    features: ['Up to 5 team members', '10GB storage', 'Basic analytics', 'Email support'],
+    features: [
+      "Up to 5 team members",
+      "10GB storage",
+      "Basic analytics",
+      "Email support",
+    ],
   },
   {
-    name: 'Pro',
+    name: "Pro",
     price: 99,
     features: [
-      'Up to 20 team members',
-      '100GB storage',
-      'Advanced analytics',
-      'Priority support',
-      'API access',
+      "Up to 20 team members",
+      "100GB storage",
+      "Advanced analytics",
+      "Priority support",
+      "API access",
     ],
   },
   {
-    name: 'Enterprise',
+    name: "Enterprise",
     price: 299,
     features: [
-      'Unlimited team members',
-      '1TB storage',
-      'Custom analytics',
-      '24/7 phone support',
-      'SLA agreement',
-      'SSO',
+      "Unlimited team members",
+      "1TB storage",
+      "Custom analytics",
+      "24/7 phone support",
+      "SLA agreement",
+      "SSO",
     ],
   },
-]
+];
