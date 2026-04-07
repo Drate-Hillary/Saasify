@@ -47,10 +47,10 @@ import { format, formatDistanceToNow, differenceInDays } from 'date-fns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Progress } from '@/components/ui/progress'
 import { toast } from 'sonner'
-import { SubscriptionDetailsDialog } from './subscription_details'
-import { CancelSubscriptionDialog } from './cancel_subscription'
-import { ChangePlanDialog } from './change_plan'
-import { Subscription, Invoice } from './types'
+import { SubscriptionDetailsDialog } from '@/app/admin/subscription_details'
+import { CancelSubscriptionDialog } from '@/app/admin/cancel_subscription'
+import { ChangePlanDialog } from '@/app/admin/change_plan'
+import { Subscription, Invoice } from '@/app/admin/types'
 
 const getStatusConfig = (status: Subscription['status']) => {
   const configs = {
