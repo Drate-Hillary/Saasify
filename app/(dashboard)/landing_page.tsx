@@ -7,6 +7,9 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Memoji02 from "@/public/Memoji-02.png";
+import Memoji03 from "@/public/Memoji-03.png";
+import Memoji04 from "@/public/Memoji-11.png";
+import Memoji05 from "@/public/Memoji-18.png";
 import { PlusIcon } from "lucide-react";
 import {
   Card,
@@ -40,15 +43,13 @@ export default function LandingPage() {
         <section className="py-20 md:py-32">
           <div className="container text-center flex flex-col content-center items-center">
             <AvatarGroup>
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className="" />
-              </Avatar>
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className="" />
-              </Avatar>
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className="" />
-              </Avatar>
+              {
+                memojiAvatar.map((avatar, index) => (
+                  <Avatar key={index} className="h-10 w-10">
+                    <AvatarImage src={avatar.src} />
+                  </Avatar>
+                ))
+              }
               <AvatarGroupCount className="h-10 w-10">
                 <PlusIcon />
               </AvatarGroupCount>
@@ -134,6 +135,13 @@ export default function LandingPage() {
     </div>
   );
 }
+
+const memojiAvatar = [
+  Memoji02,
+  Memoji03,
+  Memoji04,
+  Memoji05,
+];
 
 const pricingPlans = [
   {
