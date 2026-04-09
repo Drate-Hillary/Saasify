@@ -41,17 +41,17 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8">
-      <Card className="w-full max-w-100">
-        <CardHeader className="space-y-2">
-          <CardTitle className="text-xl sm:text-2xl text-start">Welcome back</CardTitle>
-          <CardDescription className="text-sm sm:text-base text-start">
+    <div className="container flex min-h-screen w-screen flex-col items-center justify-center">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-2xl text-start">Welcome back</CardTitle>
+          <CardDescription className="text-start">
             Enter your email and password to sign in
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -59,18 +59,18 @@ function LoginForm() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="py-3 sm:py-4"
+                className="py-4"
                 required
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <InputGroup>
                 <InputGroupInput
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  className="py-3 sm:py-4"
+                  className="py-4"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
@@ -79,9 +79,9 @@ function LoginForm() {
                   onClick={handleShowPassword}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 cursor-pointer text-muted-foreground transition-colors hover:text-foreground" />
+                    <EyeOff className="h-8 w-8 cursor-pointer" />
                   ) : (
-                    <Eye className="h-5 w-5 cursor-pointer text-muted-foreground transition-colors hover:text-foreground" />
+                    <Eye className="h-8 w-8 cursor-pointer" />
                   )}
                 </InputGroupAddon>
               </InputGroup>
@@ -89,18 +89,18 @@ function LoginForm() {
             <div className="text-right">
               <Link
                 href="/forgot_password"
-                className="text-xs text-primary hover:underline sm:text-sm"
+                className="text-xs text-primary hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full py-5 sm:py-6 text-md font-medium" disabled={loading}>
+            <Button type="submit" className="w-full py-4" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign In
             </Button>
-            <p className="text-center text-xs sm:text-sm text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
               <Link href="/register" className="text-primary hover:underline">
                 Sign up

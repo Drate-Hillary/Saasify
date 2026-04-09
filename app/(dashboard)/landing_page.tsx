@@ -1,13 +1,24 @@
-import { Avatar, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import  Memoji02 from "@/public/Memoji-02.png"
+import Memoji02 from "@/public/Memoji-02.png";
 import { PlusIcon } from "lucide-react";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-8">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-8">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="text-xl font-bold">
@@ -30,13 +41,13 @@ export default function LandingPage() {
           <div className="container text-center flex flex-col content-center items-center">
             <AvatarGroup>
               <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className=""/>
+                <AvatarImage src={Memoji02.src} alt="" className="" />
               </Avatar>
               <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className=""/>
+                <AvatarImage src={Memoji02.src} alt="" className="" />
               </Avatar>
               <Avatar className="h-10 w-10">
-                <AvatarImage src={Memoji02.src} alt="" className=""/>
+                <AvatarImage src={Memoji02.src} alt="" className="" />
               </Avatar>
               <AvatarGroupCount className="h-10 w-10">
                 <PlusIcon />
@@ -64,35 +75,57 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="pricing" className="py-20 bg-muted/50">
-          <div className="container">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Simple, Transparent Pricing
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <section id="pricing" className="py-16 md:py-24 lg:py-32 bg-muted/50">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Simple, Transparent Pricing
+              </h2>
+              <p className="max-w-175 text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Choose the plan that works best for your business needs.
+              </p>
+            </div>
+
+            {/* Responsive Grid: 1 column on mobile, 2 on tablet, 3 on desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
               {pricingPlans.map((plan) => (
-                <div
+                <Card
                   key={plan.name}
-                  className="rounded-lg border bg-background p-8"
+                  className="flex flex-col justify-between rounded-xl border bg-background p-6 md:p-8 transition-all hover:shadow-lg"
                 >
-                  <h3 className="text-2xl font-bold">{plan.name}</h3>
-                  <div className="mt-4 flex items-baseline text-5xl font-bold">
-                    ${plan.price}
-                    <span className="text-sm font-normal text-muted-foreground">
-                      /month
-                    </span>
+                  <div>
+                    <CardHeader className="p-0">
+                      <CardTitle className="text-xl font-bold">
+                        {plan.name}
+                      </CardTitle>
+                      <CardDescription className="mt-4 flex items-baseline text-4xl md:text-5xl font-bold text-foreground">
+                        ${plan.price}
+                        <span className="ml-1 text-sm font-normal text-muted-foreground">
+                          /month
+                        </span>
+                      </CardDescription>
+                    </CardHeader>
+
+                    <ul className="mt-8 space-y-3 text-sm md:text-base">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-3">
+                          <span className="text-primary font-bold">✓</span>
+                          <span className="text-muted-foreground">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="mt-6 space-y-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2">
-                        ✓ {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link href="/register">
-                    <Button className="w-full mt-8">Get Started</Button>
-                  </Link>
-                </div>
+
+                  <div className="mt-8">
+                    <Link href="/register" className="w-full">
+                      <Button className="w-full h-11 md:h-12 text-base font-medium">
+                        Get Started
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
               ))}
             </div>
           </div>
