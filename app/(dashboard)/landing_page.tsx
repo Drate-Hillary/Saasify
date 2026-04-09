@@ -1,5 +1,8 @@
+import { Avatar, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import  Memoji02 from "@/public/Memoji-02.png"
+import { PlusIcon } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -8,7 +11,7 @@ export default function LandingPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="text-xl font-bold">
-              SaaS Boilerplate
+              Saasify
             </Link>
           </div>
           <div className="flex items-center gap-4">
@@ -24,7 +27,21 @@ export default function LandingPage() {
 
       <main className="flex-1">
         <section className="py-20 md:py-32">
-          <div className="container text-center">
+          <div className="container text-center flex flex-col content-center items-center">
+            <AvatarGroup>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={Memoji02.src} alt="" className=""/>
+              </Avatar>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={Memoji02.src} alt="" className=""/>
+              </Avatar>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={Memoji02.src} alt="" className=""/>
+              </Avatar>
+              <AvatarGroupCount className="h-10 w-10">
+                <PlusIcon />
+              </AvatarGroupCount>
+            </AvatarGroup>
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
               Launch Your SaaS
               <br />
