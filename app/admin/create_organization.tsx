@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Building2, ChevronDown, Loader2, PlusCircle } from 'lucide-react'
+import { Building2, Loader2, PlusCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -81,14 +81,15 @@ export function CreateOrganizationDropdown({
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Create Organization
-            <ChevronDown className="ml-2 h-4 w-4" />
+          {/* Responsive Trigger: Icon-only on mobile, full on Desktop */}
+          <Button size="sm" className="h-8 px-2 sm:h-9 sm:px-4">
+            <PlusCircle className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Create</span>
+            <span className="sr-only">Create Organization</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem onClick={handleOpenDialog}>
+          <DropdownMenuItem onClick={handleOpenDialog} className="cursor-pointer">
             <Building2 className="mr-2 h-4 w-4" />
             New organization
           </DropdownMenuItem>
@@ -104,50 +105,58 @@ export function CreateOrganizationDropdown({
           }
         }}
       >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Create organization</DialogTitle>
-            <DialogDescription>
+        {/* Responsive Dialog: Full width on mobile, capped on Desktop */}
+        <DialogContent className="sm:max-w-[425px] w-[95vw] max-h-[90vh] overflow-y-auto rounded-lg">
+          <DialogHeader className="text-left">
+            <DialogTitle className="text-xl md:text-2xl">Create organization</DialogTitle>
+            <DialogDescription className="text-sm sm:text-xs">
               Add a new organization to your workspace. A unique slug will be generated
-              automatically from the organization name.
+              automatically.
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="organization-name">Organization Name</Label>
+          <form onSubmit={handleSubmit} className="space-y-5 pt-2">
+            <div className="space-y-0">
+              <Label htmlFor="organization-name" className="text-sm font-semibold">
+                Organization Name
+              </Label>
               <Input
                 id="organization-name"
                 placeholder="Acme Inc"
+                className="h-10"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="organization-logo">Logo URL</Label>
+            <div className="space-y-0">
+              <Label htmlFor="organization-logo" className="text-sm font-semibold">
+                Logo URL (Optional)
+              </Label>
               <Input
                 id="organization-logo"
                 type="url"
                 placeholder="https://example.com/logo.png"
+                className="h-10"
                 value={logo}
                 onChange={(e) => setLogo(e.target.value)}
               />
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-0 sm:space-x-2 pt-4">
               <Button
                 type="button"
                 variant="outline"
+                className="h-10 sm:h-10"
                 onClick={() => setDialogOpen(false)}
                 disabled={isLoading}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" className="h-10 sm:h-10" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create organization
+                Create
               </Button>
             </DialogFooter>
           </form>
