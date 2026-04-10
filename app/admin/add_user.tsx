@@ -62,32 +62,34 @@ export function AddUserDialog({ open, onOpenChange, onSuccess }: AddUserDialogPr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Add New User</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="sm:max-w-[425px] w-[95vw] max-h-[90vh] overflow-y-auto rounded-lg">
+        <DialogHeader className="text-left">
+          <DialogTitle className="text-xl md:text-2xl">Add New User</DialogTitle>
+          <DialogDescription className="text-xs">
             Create a new user account. They will receive an email to set their password.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+        <form onSubmit={handleSubmit} className="space-y-5 pt-2">
+          <div className="space-y-0">
+            <Label htmlFor="name" className="text-sm font-semibold">Full Name</Label>
             <Input
               id="name"
               placeholder="John Doe"
+              className="h-10"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+          <div className="space-y-0">
+            <Label htmlFor="email" className="text-sm font-semibold">Email Address</Label>
             <Input
               id="email"
               type="email"
               placeholder="john@example.com"
+              className="h-10"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -95,24 +97,31 @@ export function AddUserDialog({ open, onOpenChange, onSuccess }: AddUserDialogPr
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="role" className="text-sm font-semibold">User Role</Label>
             <Select value={role} onValueChange={(v: 'owner' | 'admin' | 'member') => setRole(v)}>
-              <SelectTrigger id="role">
+              <SelectTrigger id="role" className="h-11">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="member">Member</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="owner">Owner</SelectItem>
+                <SelectItem value="member">Member (Read-only)</SelectItem>
+                <SelectItem value="admin">Admin (Manage data)</SelectItem>
+                <SelectItem value="owner">Owner (Full access)</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+          <DialogFooter className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-0 sm:space-x-2 pt-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => onOpenChange(false)}
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+            >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Add User
             </Button>
