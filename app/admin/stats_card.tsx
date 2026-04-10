@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Building2, CreditCard, DollarSign, TrendingUp } from 'lucide-react'
+import { Users, Building2, CreditCard, DollarSign } from 'lucide-react'
 import { db } from '@/lib/db'
 import { users, organizations, subscriptions } from '@/lib/db/schema'
 import { eq, count } from 'drizzle-orm'
@@ -27,15 +27,19 @@ export async function StatsCards() {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
       {stats.map((stat) => (
-        <Card key={stat.title}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            <stat.icon className="h-4 w-4 text-muted-foreground" />
+        <Card key={stat.title} className="shadow-sm border-muted/60">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-[10px] xs:text-xs md:text-sm font-medium text-muted-foreground tracking-wider">
+              {stat.title}
+            </CardTitle>
+            <stat.icon className="h-6 w-6 text-primary md:text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stat.value}</div>
+            <div className="text-lg xs:text-xl md:text-2xl font-bold tracking-tight">
+              {stat.value}
+            </div>
           </CardContent>
         </Card>
       ))}
