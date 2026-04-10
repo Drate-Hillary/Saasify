@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Bell, Search, Settings, LogOut, User, Moon, Sun, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Bell, Search, Settings, User, Moon, Sun, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,8 +18,21 @@ import { Badge } from '@/components/ui/badge'
 import { SidebarTrigger } from './ui/sidebar'
 import { cn } from '@/lib/utils'
 import { Separator } from './ui/separator'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import Memoji from '@/public/Memoji-18.png'
+import { HugeiconsIcon } from "@hugeicons/react"
+import { LogoutIcon } from "@hugeicons/core-free-icons"
 
 export function Header() {
+  const supabase = createClient();
+  const router = useRouter();
+  const [user, setUser] = useState<{
+    name: string,
+    email: string,
+    avatar: string,
+  } | null>(null);
   const { theme, setTheme } = useTheme()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [notifications] = useState([
@@ -29,6 +42,32 @@ export function Header() {
   ])
 
   const unreadCount = notifications.filter(n => !n.read).length
+
+  useEffect(()=> {
+      const getUserData = async() => {
+        const {data: {user: authUser}} = await supabase.auth.getUser()
+  
+        if(authUser){
+          setUser({
+            name: authUser.user_metadata.full_name || authUser.email?.split('@')[0] || "User",
+            email: authUser.email || "",
+            avatar: authUser.user_metadata.avatar_url || "",
+          });
+        }
+      };
+  
+      getUserData();
+    }, [supabase]);
+  
+    const handleLogout = async () => {
+      const {error} = await supabase.auth.signOut();
+      if (error) {
+        toast.error("Error Logging out.")
+      }
+      toast.success("Logged out Successfully");
+      router.push("/");
+      router.refresh();
+    }
 
   return (
     <header className="sticky top-0 z-50 flex h-16 items-center gap-2 border-b bg-background px-4 md:px-6">
@@ -44,7 +83,6 @@ export function Header() {
           />
         </div>
 
-        {/* Mobile Search Overlay: Appears when toggled */}
         <div className={cn(
           "absolute inset-x-0 top-0 z-50 flex h-16 items-center bg-background px-4 md:hidden transition-all duration-200",
           isSearchOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
@@ -64,7 +102,6 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">
-        {/* Mobile Search Toggle */}
         <Button 
           variant="ghost" 
           size="icon" 
@@ -74,7 +111,6 @@ export function Header() {
           <Search className="h-5 w-5" />
         </Button>
 
-        {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="relative">
@@ -103,7 +139,6 @@ export function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Theme Toggle: Hidden on very small screens to save space if needed */}
         <Button
           variant="ghost"
           size="icon"
@@ -118,7 +153,7 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full ml-1">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/admin.png" />
+                <AvatarImage src={user?.avatar || Memoji.src} />
                 <AvatarFallback className="bg-primary/10 text-primary text-xs">AD</AvatarFallback>
               </Avatar>
             </Button>
@@ -126,8 +161,8 @@ export function Header() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">Admin User</p>
-                <p className="text-xs leading-none text-muted-foreground">admin@saasify.com</p>
+                <p className="text-sm font-medium leading-none">{user?.name}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -140,8 +175,8 @@ export function Header() {
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
-              <LogOut className="mr-2 h-4 w-4" />
+            <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={handleLogout}>
+              <HugeiconsIcon icon={LogoutIcon} className="mr-2 h-4 w-4" />
               <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
