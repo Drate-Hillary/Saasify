@@ -22,8 +22,10 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -37,15 +39,16 @@ function LoginForm() {
     e.preventDefault();
     setLoading(true);
     const result = await signInWithPassword(email, password);
-    if (result?.error) toast.error(result.error);
-    setLoading(false);
+    if (result?.error) {
+      toast.error(result.error);
+      setLoading(false);
+    }
+    toast.success("Logged In Successfully");
+    router.push('/dashboard')
   };
 
   return (
-    /* Removed w-screen and container to allow better mobile behavior */
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background px-4 py-8">
-      
-      {/* Branding or Back Link (Optional but keeps it consistent with Forgot Password) */}
       <div className="mb-6 text-center">
         <Link href="/" className="text-2xl font-bold tracking-tight">
           Saasify
@@ -74,7 +77,7 @@ function LoginForm() {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
@@ -110,14 +113,21 @@ function LoginForm() {
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4 pb-8">
-            <Button type="submit" className="w-full h-10 mt-8 text-base" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full h-10 mt-8 text-base"
+              disabled={loading}
+            >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign In
             </Button>
-            
+
             <p className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="font-medium text-primary hover:underline underline-offset-4">
+              <Link
+                href="/register"
+                className="font-medium text-primary hover:underline underline-offset-4"
+              >
                 Sign up
               </Link>
             </p>

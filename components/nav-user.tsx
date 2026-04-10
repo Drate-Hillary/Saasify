@@ -22,17 +22,49 @@ import {
 } from "@/components/ui/sidebar"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { UnfoldMoreIcon, SparklesIcon, CheckmarkBadgeIcon, CreditCardIcon, NotificationIcon, LogoutIcon } from "@hugeicons/core-free-icons"
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import Memoji from "@/public/Memoji-02.png"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser() {
+  const supabase = createClient();
+  const router = useRouter();
+  const [user, setUser] = useState<{
+    name: string,
+    email: string,
+    avatar: string,
+  } | null>(null);
   const { isMobile } = useSidebar()
+
+  useEffect(()=> {
+    const getUserData = async() => {
+      const {data: {user: authUser}} = await supabase.auth.getUser()
+
+      if(authUser){
+        setUser({
+          name: authUser.user_metadata.full_name || authUser.email?.split('@')[0] || "User",
+          email: authUser.email || "",
+          avatar: authUser.user_metadata.avatar_url || "",
+        });
+      }
+    };
+
+    getUserData();
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    const {error} = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Error Logging out.")
+    }
+    toast.success("Logged out Successfully");
+    router.push("/");
+    router.refresh();
+  }
+
+  if (!user) return <div className="p-4 animate-pulse">Loading...</div>;
 
   return (
     <SidebarMenu>
@@ -44,7 +76,7 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={user.avatar || Memoji.src} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -63,8 +95,7 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage src={user.avatar || Memoji.src} alt={user.name} />
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -95,7 +126,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
               Log out
             </DropdownMenuItem>
