@@ -81,7 +81,6 @@ export function CreateOrganizationDropdown({
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
-          {/* Responsive Trigger: Icon-only on mobile, full on Desktop */}
           <Button size="sm" className="h-8 px-2 sm:h-9 sm:px-4">
             <PlusCircle className="h-4 w-4 sm:mr-2" />
             <span className="hidden sm:inline">Create</span>
