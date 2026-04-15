@@ -1,19 +1,20 @@
 import { RevenueChart } from '@/app/admin/revenue_chart'
 import { StatsCards } from '@/app/admin/stats_card'
 import { SubscribersChart } from '@/app/admin/subscribers_chart'
-import { createClient } from '@/lib/supabase/client'
+import { db } from '@/lib/db'
+import { users } from '@/lib/db/schema'
+import { and, count, eq, isNull } from 'drizzle-orm'
 
 export default async function DashboardPage() {
-  const db = await createClient()
-  const { count: activeCount } = await db
-    .from('users')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'active')
+  const [[{ value: activeCount = 0 }], [{ value: inactiveCount = 0 }]] = await Promise.all([
+    db.select({ value: count() })
+      .from(users)
+      .where(and(eq(users.status, 'active'), isNull(users.deletedAt))),
+    db.select({ value: count() })
+      .from(users)
+      .where(and(eq(users.status, 'suspended'), isNull(users.deletedAt))),
+  ])
 
-  const { count: inactiveCount } = await db
-    .from('users')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'suspended')
   return (
     <div className="space-y-6">
       <div className='mt-2'>
